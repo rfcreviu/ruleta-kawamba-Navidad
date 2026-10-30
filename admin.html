@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel Admin · Ruleta Kawamba</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="admin-body">
+  <div class="admin-container">
+    <div class="admin-header">
+      <h1>⚙ Panel de Administración</h1>
+      <a href="/" class="back-link">← Volver a la ruleta</a>
+    </div>
+
+    <!-- Login -->
+    <div id="loginCard" class="login-card">
+      <h2 style="margin-top:0;">Acceso restringido</h2>
+      <p>Introduce el PIN de administrador</p>
+      <input type="password" id="pinInput" inputmode="numeric" placeholder="••••" maxlength="12">
+      <div id="loginError" class="status-msg error"></div>
+      <button id="loginBtn" class="btn-primary" style="width:100%;">Entrar</button>
+    </div>
+
+    <!-- Panel -->
+    <div id="panel" class="hidden">
+      <div class="panel-card">
+        <h2>🎯 Probabilidades de los premios</h2>
+        <div id="prizeList"></div>
+        <div class="total-row">Suma de pesos: <span id="totalWeight">0</span></div>
+        <div id="saveStatus" class="status-msg"></div>
+        <div class="btn-row">
+          <button id="saveBtn" class="btn-save">💾 Guardar cambios</button>
+          <button id="resetBtn" class="btn-reset">↺ Restaurar valores</button>
+          <button id="logoutBtn" class="btn-logout">Cerrar sesión</button>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <h2>🔑 Cambiar PIN de acceso</h2>
+        <div class="pin-row">
+          <input type="password" id="newPinInput" placeholder="Nuevo PIN (mín. 4 caracteres)">
+          <button id="changePinBtn" class="btn-save" style="flex:none;">Actualizar</button>
+        </div>
+        <div id="pinStatus" class="status-msg"></div>
+      </div>
+
+      <div class="panel-card">
+        <div class="history-header">
+          <h2 style="border:none; margin:0; padding:0;">📜 Historial de giros recientes</h2>
+          <button id="clearHistoryBtn" class="btn-clear-history">Vaciar todo</button>
+        </div>
+        <div id="historyList" class="history-list">Cargando...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de confirmación -->
+  <div id="confirmModal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <h2 id="confirmTitle">¿Confirmar?</h2>
+      <p id="confirmText" class="modal-sub"></p>
+      <div class="btn-row">
+        <button id="confirmYesBtn" class="btn-clear-history">Sí, continuar</button>
+        <button id="confirmNoBtn" class="btn-logout">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

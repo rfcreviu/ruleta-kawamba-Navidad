@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Kawamba · Ruleta de Navidad</title>
+<link rel="icon" href="assets/premio1.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="bg-scene" aria-hidden="true">
+    <div class="bg-image"></div>
+    <div class="bg-overlay"></div>
+    <div class="bg-glow glow-a"></div>
+    <div class="bg-glow glow-b"></div>
+  </div>
+
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-mark"><span></span><span></span><span></span></div>
+      <div class="brand-text">
+        <strong>KAWAMBA</strong>
+        <small>Campaña de Navidad</small>
+      </div>
+    </div>
+    <a href="/admin" class="admin-pill" aria-label="Panel de administración">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7Z" stroke="currentColor" stroke-width="1.6"/><path d="M19.4 13.5c.04-.49.04-.99 0-1.48l1.56-1.2a1 1 0 0 0 .23-1.3l-1.5-2.6a1 1 0 0 0-1.21-.44l-1.84.74a7.2 7.2 0 0 0-1.28-.74l-.28-1.96A1 1 0 0 0 14.1 3h-3a1 1 0 0 0-1 .83l-.28 1.96c-.46.2-.89.45-1.28.74l-1.84-.74a1 1 0 0 0-1.21.44l-1.5 2.6a1 1 0 0 0 .23 1.3l1.56 1.2c-.04.49-.04.99 0 1.48l-1.56 1.2a1 1 0 0 0-.23 1.3l1.5 2.6a1 1 0 0 0 1.21.44l1.84-.74c.39.29.82.54 1.28.74l.28 1.96a1 1 0 0 0 1 .83h3a1 1 0 0 0 1-.83l.28-1.96c.46-.2.89-.45 1.28-.74l1.84.74a1 1 0 0 0 1.21-.44l1.5-2.6a1 1 0 0 0-.23-1.3l-1.56-1.2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+    </a>
+  </header>
+
+  <main class="wheel-stage">
+    <div class="eyebrow">Tu premio te espera</div>
+    <h1 class="stage-title">Gira y gana</h1>
+
+    <div class="wheel-wrapper">
+      <div class="wheel-ring"></div>
+      <div class="pointer">
+        <svg width="34" height="40" viewBox="0 0 34 40" fill="none"><path d="M17 40 2 14C-2 7 4 0 13 0h8c9 0 15 7 11 14L17 40Z" fill="#E4572E"/><path d="M17 40 2 14C-2 7 4 0 13 0h8c9 0 15 7 11 14L17 40Z" fill="url(#pg)" fill-opacity="0.35"/><defs><linearGradient id="pg" x1="17" y1="0" x2="17" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs></svg>
+      </div>
+      <canvas id="wheelCanvas" width="1100" height="1100"></canvas>
+      <button id="spinBtn" class="spin-btn" aria-label="Girar la ruleta">
+        <span class="spin-btn-inner"><span class="spin-btn-text">GIRAR</span></span>
+      </button>
+    </div>
+
+    <p class="hint">Toca el centro de la ruleta para participar</p>
+  </main>
+
+  <footer class="app-footer">
+    <span class="footer-dot">●</span> Evento exclusivo Kawamba
+  </footer>
+
+  <!-- Modal: pedir nombre -->
+  <div id="nameModal" class="modal-overlay hidden">
+    <div class="modal-card name-card">
+      <div class="modal-icon">✍️</div>
+      <h2>¿Cómo te llamas?</h2>
+      <p class="modal-sub">Escribe tu nombre para registrar tu premio</p>
+      <form id="nameForm" autocomplete="off">
+        <input type="text" id="playerNameInput" placeholder="Tu nombre" maxlength="60" required autofocus>
+        <input type="email" id="playerEmailInput" placeholder="Correo electrónico (opcional)" maxlength="120">
+        <div id="nameError" class="field-error"></div>
+        <button type="submit" class="btn-primary btn-full">Continuar y girar 🎡</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de resultado -->
+  <div id="resultModal" class="modal-overlay hidden">
+    <div class="modal-card result-card">
+      <div class="confetti" aria-hidden="true"></div>
+      <div class="result-badge">🎊</div>
+      <h2>¡Enhorabuena<span id="resultPlayerWrap">, <span id="resultPlayer"></span></span>!</h2>
+      <div class="result-img-wrap">
+        <img id="resultImg" src="" alt="Premio ganado">
+      </div>
+      <p id="resultName" class="result-name"></p>
+      <p class="result-code">Código: <strong id="resultCode"></strong></p>
+      <p class="result-sub">Acércate al stand para recoger tu premio</p>
+      <button id="closeModalBtn" class="btn-primary btn-full">¡Genial!</button>
+    </div>
+  </div>
+
+  <!-- Modal de error -->
+  <div id="errorModal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-icon">😕</div>
+      <h2>Vaya...</h2>
+      <p id="errorText" class="modal-sub">Algo salió mal, inténtalo de nuevo.</p>
+      <button id="closeErrorBtn" class="btn-primary btn-full">Cerrar</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
