@@ -38,27 +38,36 @@ def _p(id_, nombre, imagen, stock, peso=None):
 
 
 DEFAULT_PRIZES = [
-    _p("premio01", "Balde Coca-Cola con limón y naranja", "assets/premio01-balde-cocacola.png", 3),
-    _p("premio02", "Neceser Powerade", "assets/premio02-neceser-powerade.png", 1),
-    _p("premio03", "Nevera de playa Frigo (Fanta + pelota)", "assets/premio04-nevera-frigo.png", 1),
-    _p("premio04", "Schweppes Limón", "assets/premio03-schweppes-limon.png", 12),
-    _p("premio05", "Schweppes Naranja", "assets/premio05-schweppes-naranja.png", 13),
-    _p("premio06", "Whisky Ballantine's", "assets/premio06-ballantines.png", 5),
-    _p("premio07", "Ron Barceló", "assets/premio07-barcelo.png", 5),
-    _p("premio08", "Licor Amaretto", "assets/premio09-amaretto.png", 1),
-    _p("premio09", "Vino Tinto", "assets/premio08-vino-tinto.png", 2),
-    _p("premio10", "Brandy Veterano", "assets/premio10-veterano.png", 1),
-    _p("premio11", "Licor de Melocotón", "assets/premio11-melocoton.png", 1),
-    _p("premio12", "Vodka Absolut", "assets/premio12-absolut.png", 2),
-    _p("premio13", "Jägermeister", "assets/premio13-jagermeister.png", 1),
-    _p("premio14", "Ginebra Bombay Sapphire", "assets/premio14-bombay.png", 1),
-    _p("premio15", "Whisky Etiqueta Roja", "assets/premio17-red-label.png", 1),
-    _p("premio16", "2 Acompañamientos gratis", "assets/premio15-acompanamientos.png", 50),
-    _p("premio17", "2 Refrescos o agua gratis", "assets/premio18-refrescos-agua.png", 50),
-    _p("premio18", "1 Cóctel gratis", "assets/premio20-coctel.png", 20),
-    _p("premio19", "1 Postre gratis", "assets/premio16-postre.png", 20),
-    _p("premio20", "2 Mahou 5 Estrellas gratis", "assets/premio18-refrescos-agua.png", 20),
-    _p("premio21", "Sorpresa Coca-Cola & Pepsi", "assets/premio02-neceser-powerade.png", None, peso=5),
+    _p("premio01", "Balde Coca-Cola", "assets/01-balde-coca-cola.png", None, peso=1),
+    _p("premio02", "Kit Powerade Fanta", "assets/02-kit-powerade-fanta.png", None, peso=1),
+    _p("premio03", "Nevera Frigo", "assets/03-nevera-frigo.png", None, peso=1),
+    _p("premio04", "Ballantines", "assets/04-ballantines.png", None, peso=1),
+    _p("premio05", "Ron Barceló", "assets/05-ron-barcelo.png", None, peso=1),
+    _p("premio06", "Amaretto", "assets/06-amaretto.png", None, peso=1),
+    _p("premio07", "Vino Tinto", "assets/07-vino-tinto.png", None, peso=1),
+    _p("premio08", "Veterano", "assets/08-veterano.png", None, peso=1),
+    _p("premio09", "Licor Melocotón", "assets/09-licor-melocoton.png", None, peso=1),
+    _p("premio10", "Absolut", "assets/10-absolut.png", None, peso=1),
+    _p("premio11", "Jägermeister", "assets/11-jagermeister.png", None, peso=1),
+    _p("premio12", "Bombay", "assets/12-bombay.png", None, peso=1),
+    _p("premio13", "Etiqueta Roja", "assets/13-etiqueta-roja.png", None, peso=1),
+    _p("premio14", "Acompañamientos", "assets/14-acompanamientos.png", None, peso=1),
+    _p("premio15", "Refrescos y Aguas", "assets/15-refrescos-aguas.png", None, peso=1),
+    _p("premio16", "Cóctel", "assets/16-coctel.png", None, peso=1),
+    _p("premio17", "Postre", "assets/17-postre.png", None, peso=1),
+    _p("premio18", "Mahou para Dos", "assets/18-mahou-para-dos.png", None, peso=1),
+    _p("premio19", "Pack Monster", "assets/19-pack-monster.png", None, peso=1),
+    _p("premio20", "Reloj Coca-Cola", "assets/20-reloj-coca-cola.png", None, peso=1),
+    _p("premio21", "Kit Fanta Polo", "assets/21-kit-fanta-polo.png", None, peso=1),
+    _p("premio22", "Pack Fuze Tea", "assets/22-pack-fuze-tea.png", None, peso=1),
+    _p("premio23", "Brindis Rosa", "assets/23-brindis-rosa.png", None, peso=1),
+    _p("premio24", "Silla Nevera", "assets/24-silla-nevera.png", None, peso=1),
+    _p("premio25", "7UP Camiseta", "assets/25-7up-camiseta.png", None, peso=1),
+    _p("premio26", "Entreno Pádel", "assets/26-entreno-padel.png", None, peso=1),
+    _p("premio27", "7UP Vaso", "assets/27-7up-vaso.png", None, peso=1),
+    _p("premio28", "7UP Vaso + Dos Refrescos", "assets/28-7up-vaso-dos-refrescos.png", None, peso=1),
+    _p("premio29", "Pack Canario 7UP Gorro", "assets/29-pack-canario-7up-gorro.png", None, peso=1),
+    _p("premio30", "Pack Schweppes Sacachapas", "assets/30-pack-schweppes-sacachapas.png", None, peso=1),
 ]
 
 DEFAULT_CONFIG = {
@@ -190,11 +199,17 @@ def admin():
     return send_from_directory(BASE_DIR, "admin.html")
 
 
+PUBLIC_FILES = {"app.js", "admin.js", "styles.css"}
+
+
 @app.route("/<path:path>")
 def static_files(path):
-    full = BASE_DIR / path
-    if full.exists() and full.is_file():
+    # Solo se sirven los archivos públicos de la web y la carpeta assets/.
+    # Nunca data/, server.py, etc. (contienen el PIN y datos de participantes).
+    if path in PUBLIC_FILES:
         return send_from_directory(BASE_DIR, path)
+    if path.startswith("assets/"):
+        return send_from_directory(BASE_DIR / "assets", path[len("assets/"):])
     return jsonify({"error": "No encontrado"}), 404
 
 
@@ -361,8 +376,11 @@ def admin_reset():
     return jsonify({"ok": True, "premios": config["premios"]})
 
 
+# Se ejecuta también cuando arranca con gunicorn (Railway)
+ensure_data_files()
+
+
 if __name__ == "__main__":
-    ensure_data_files()
     port = int(os.environ.get("PORT", 5000))
     print(f"\n� Ruleta Kawamba - Campaña de Navidad")
     print(f"   App:   http://localhost:{port}")
